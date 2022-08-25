@@ -164,62 +164,33 @@ st.write("Observação: caso não tenha a informação dos PDVs ativos preencher
 st.subheader("Input")
 simulador_frente_caixa = st.file_uploader('Insira a planilha de input')
 
-if simulador_frente_caixa:
-Input_Simulador_Filas = pd.read_excel(simulador_frente_caixa)
+    if simulador_frente_caixa:
+    Input_Simulador_Filas = pd.read_excel(simulador_frente_caixa)
 
-st.dataframe(Input_Simulador_Filas)
+    st.dataframe(Input_Simulador_Filas)
 
-colunas = Input_Simulador_Filas.columns
+    colunas = Input_Simulador_Filas.columns
 
-# Salvando informações:
-TA = Input_Simulador_Filas[colunas[3]]
-TC = Input_Simulador_Filas[colunas[4]]
-TE = list(Input_Simulador_Filas[colunas[5]])
-PDVA = list(Input_Simulador_Filas[colunas[6]])
-SLA_ = list(Input_Simulador_Filas[colunas[6]])
+    # Salvando informações:
+    TA = Input_Simulador_Filas[colunas[3]]
+    TC = Input_Simulador_Filas[colunas[4]]
+    TE = list(Input_Simulador_Filas[colunas[5]])
+    PDVA = list(Input_Simulador_Filas[colunas[6]])
+    SLA_ = list(Input_Simulador_Filas[colunas[6]])
 
-# Criando listas para preencher os dados:
-TF = []
-TFG = []
-TAM = []
-TAMG = []
-PDV = []
+    # Criando listas para preencher os dados:
+    TF = []
+    TFG = []
+    TAM = []
+    TAMG = []
+    PDV = []
 
-for i in range(len(TA)):
+    for i in range(len(TA)):
 
-  arrival_rate = TC[i]
-  departure_rate = TA[i]
-  capacity = PDVA[i]
-  SLA = SLA_[i]
-
-  Fila = MMcQueue(arrival_rate,departure_rate,capacity)
-
-  PO = round(Fila.getIdleProb(),4) # Probabilidade de Estar Vazia
-  Tempo_de_Fila = round(Fila.getAvgQueueTime_Given(),4) # Tempo de Fila
-  PROB_SLA = round(Fila.getPorbWhenQueueTimeLargerThan(SLA),4)
-  Tamanho = round(Fila.getAvgPackets(),4)
-  Tamanho_Given =  round(Fila.getAvgQueuePacket_Given(),4)
-  Tempo = round(Fila.getAvgQueueTime(),4)
-  Tempo_Given =round(Fila.getAvgQueueTime_Given(),4)
-
-  if Tempo_Given<SLA:
-
-    while (Tempo_Given > SLA):
-      capacity = capacity + 1
-      Fila = MMcQueue(arrival_rate,departure_rate,capacity)
-
-      PO = round(Fila.getIdleProb(),4) # Probabilidade de Estar Vazia
-      Tempo_de_Fila = round(Fila.getAvgQueueTime_Given(),4) # Tempo de Fila
-      PROB_SLA = round(Fila.getPorbWhenQueueTimeLargerThan(SLA),4)
-      Tamanho = round(Fila.getAvgPackets(),4)
-      Tamanho_Given =  round(Fila.getAvgQueuePacket_Given(),4)
-      Tempo = round(Fila.getAvgQueueTime(),4)
-      Tempo_Given =round(Fila.getAvgQueueTime_Given(),4)
-
-  else:
-
-    while(Tempo_Given > SLA*1.30):
-      capacity = capacity -1
+      arrival_rate = TC[i]
+      departure_rate = TA[i]
+      capacity = PDVA[i]
+      SLA = SLA_[i]
 
       Fila = MMcQueue(arrival_rate,departure_rate,capacity)
 
@@ -231,37 +202,66 @@ for i in range(len(TA)):
       Tempo = round(Fila.getAvgQueueTime(),4)
       Tempo_Given =round(Fila.getAvgQueueTime_Given(),4)
 
-  TF.append(Tempo)
-  TFG.append(Tempo_Given)
-  TAM.append(Tamanho)
-  TAMG.append(Tamanho_Given)
-  PDV.append(capacity)
+      if Tempo_Given<SLA:
 
-Input_Simulador_Filas["Tempo Médio de Fila"] = TF
-Input_Simulador_Filas["Tempo Médio dado que a Fila Existe"] = TFG
-Input_Simulador_Filas["Tamanho Médio da Fila"] = TAM
-Input_Simulador_Filas["Tamanho Médio da Fila dado que ela existe"] = TAMG
-Input_Simulador_Filas["PDVs necessários"] = PDV
-st.subheader("Output")
-st.dataframe(Input_Simulador_Filas)
+        while (Tempo_Given > SLA):
+          capacity = capacity + 1
+          Fila = MMcQueue(arrival_rate,departure_rate,capacity)
 
-def to_excel(df):
-    output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, sheet_name='Sheet1')
-    workbook = writer.book
-    worksheet = writer.sheets['Sheet1']
-    format1 = workbook.add_format({'num_format': '0.00'})
-    worksheet.set_column('A:A', None, format1)
-    writer.save()
-    processed_data = output.getvalue()
-    return processed_data
+          PO = round(Fila.getIdleProb(),4) # Probabilidade de Estar Vazia
+          Tempo_de_Fila = round(Fila.getAvgQueueTime_Given(),4) # Tempo de Fila
+          PROB_SLA = round(Fila.getPorbWhenQueueTimeLargerThan(SLA),4)
+          Tamanho = round(Fila.getAvgPackets(),4)
+          Tamanho_Given =  round(Fila.getAvgQueuePacket_Given(),4)
+          Tempo = round(Fila.getAvgQueueTime(),4)
+          Tempo_Given =round(Fila.getAvgQueueTime_Given(),4)
 
-df_xlsx = to_excel(Input_Simulador_Filas)
+      else:
 
-st.download_button(label='📥 Clique aqui para baixar os resultados',
-                   data=df_xlsx,
-                   file_name='Simulador_Caixas.xlsx')
+        while(Tempo_Given > SLA*1.30):
+          capacity = capacity -1
+
+          Fila = MMcQueue(arrival_rate,departure_rate,capacity)
+
+          PO = round(Fila.getIdleProb(),4) # Probabilidade de Estar Vazia
+          Tempo_de_Fila = round(Fila.getAvgQueueTime_Given(),4) # Tempo de Fila
+          PROB_SLA = round(Fila.getPorbWhenQueueTimeLargerThan(SLA),4)
+          Tamanho = round(Fila.getAvgPackets(),4)
+          Tamanho_Given =  round(Fila.getAvgQueuePacket_Given(),4)
+          Tempo = round(Fila.getAvgQueueTime(),4)
+          Tempo_Given =round(Fila.getAvgQueueTime_Given(),4)
+
+      TF.append(Tempo)
+      TFG.append(Tempo_Given)
+      TAM.append(Tamanho)
+      TAMG.append(Tamanho_Given)
+      PDV.append(capacity)
+
+    Input_Simulador_Filas["Tempo Médio de Fila"] = TF
+    Input_Simulador_Filas["Tempo Médio dado que a Fila Existe"] = TFG
+    Input_Simulador_Filas["Tamanho Médio da Fila"] = TAM
+    Input_Simulador_Filas["Tamanho Médio da Fila dado que ela existe"] = TAMG
+    Input_Simulador_Filas["PDVs necessários"] = PDV
+    st.subheader("Output")
+    st.dataframe(Input_Simulador_Filas)
+
+    def to_excel(df):
+        output = BytesIO()
+        writer = pd.ExcelWriter(output, engine='xlsxwriter')
+        df.to_excel(writer, index=False, sheet_name='Sheet1')
+        workbook = writer.book
+        worksheet = writer.sheets['Sheet1']
+        format1 = workbook.add_format({'num_format': '0.00'})
+        worksheet.set_column('A:A', None, format1)
+        writer.save()
+        processed_data = output.getvalue()
+        return processed_data
+
+    df_xlsx = to_excel(Input_Simulador_Filas)
+
+    st.download_button(label='📥 Clique aqui para baixar os resultados',
+                       data=df_xlsx,
+                       file_name='Simulador_Caixas.xlsx')
 
 
 
