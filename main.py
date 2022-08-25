@@ -227,12 +227,12 @@ if simulador_frente_caixa:
           Tempo = round(Fila.getAvgQueueTime(),4)
           Tempo_Given =round(Fila.getAvgQueueTime_Given(),4)
 
-        TF.append(Tempo)
-        TFG.append(Tempo_Given)
-        TAM.append(Tamanho)
-        TAMG.append(Tamanho_Given)
-        PDV.append(capacity)
-
+      TF.append(Tempo)
+      TFG.append(Tempo_Given)
+      TAM.append(Tamanho)
+      TAMG.append(Tamanho_Given)
+      PDV.append(capacity)
+    
     Input_Simulador_Filas["Tempo Médio de Fila"] = TF
     Input_Simulador_Filas["Tempo Médio dado que a Fila Existe"] = TFG
     Input_Simulador_Filas["Tamanho Médio da Fila"] = TAM
