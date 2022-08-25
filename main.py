@@ -164,11 +164,10 @@ st.write("Observação: caso não tenha a informação dos PDVs ativos preencher
 st.subheader("Input")
 simulador_frente_caixa = st.file_uploader('Insira a planilha de input')
 
-    if simulador_frente_caixa:
+if simulador_frente_caixa:
+    
     Input_Simulador_Filas = pd.read_excel(simulador_frente_caixa)
-
     st.dataframe(Input_Simulador_Filas)
-
     colunas = Input_Simulador_Filas.columns
 
     # Salvando informações:
@@ -207,7 +206,6 @@ simulador_frente_caixa = st.file_uploader('Insira a planilha de input')
         while (Tempo_Given > SLA):
           capacity = capacity + 1
           Fila = MMcQueue(arrival_rate,departure_rate,capacity)
-
           PO = round(Fila.getIdleProb(),4) # Probabilidade de Estar Vazia
           Tempo_de_Fila = round(Fila.getAvgQueueTime_Given(),4) # Tempo de Fila
           PROB_SLA = round(Fila.getPorbWhenQueueTimeLargerThan(SLA),4)
@@ -220,9 +218,7 @@ simulador_frente_caixa = st.file_uploader('Insira a planilha de input')
 
         while(Tempo_Given > SLA*1.30):
           capacity = capacity -1
-
           Fila = MMcQueue(arrival_rate,departure_rate,capacity)
-
           PO = round(Fila.getIdleProb(),4) # Probabilidade de Estar Vazia
           Tempo_de_Fila = round(Fila.getAvgQueueTime_Given(),4) # Tempo de Fila
           PROB_SLA = round(Fila.getPorbWhenQueueTimeLargerThan(SLA),4)
@@ -231,11 +227,11 @@ simulador_frente_caixa = st.file_uploader('Insira a planilha de input')
           Tempo = round(Fila.getAvgQueueTime(),4)
           Tempo_Given =round(Fila.getAvgQueueTime_Given(),4)
 
-      TF.append(Tempo)
-      TFG.append(Tempo_Given)
-      TAM.append(Tamanho)
-      TAMG.append(Tamanho_Given)
-      PDV.append(capacity)
+        TF.append(Tempo)
+        TFG.append(Tempo_Given)
+        TAM.append(Tamanho)
+        TAMG.append(Tamanho_Given)
+        PDV.append(capacity)
 
     Input_Simulador_Filas["Tempo Médio de Fila"] = TF
     Input_Simulador_Filas["Tempo Médio dado que a Fila Existe"] = TFG
@@ -262,7 +258,3 @@ simulador_frente_caixa = st.file_uploader('Insira a planilha de input')
     st.download_button(label='📥 Clique aqui para baixar os resultados',
                        data=df_xlsx,
                        file_name='Simulador_Caixas.xlsx')
-
-
-
-
