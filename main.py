@@ -3,6 +3,8 @@ import streamlit as st
 import numpy as np
 import math
 from PIL import Image
+from io import BytesIO
+from pyxlsb import open_workbook as open_xlsb
 
 # M/M/c Queue is a Queue with only `c` servers and an infinite buffer.
 # Detail Definition of M/M/c Queue: https://en.wikipedia.org/wiki/M/M/c_queue
@@ -240,7 +242,7 @@ if simulador_frente_caixa:
     Input_Simulador_Filas["PDVs necessários"] = PDV
     
     st.subheader("Output")
-    st.table(Input_Simulador_Filas)
+    st.dataframe(Input_Simulador_Filas)
 
     def to_excel(df):
         output = BytesIO()
