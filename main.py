@@ -242,7 +242,7 @@ if simulador_frente_caixa:
     Input_Simulador_Filas["PDVs necessários"] = PDV
     
     st.subheader("Output")
-    st.dataframe(Input_Simulador_Filas)
+    st.dataframe(Input_Simulador_Filas, width=600, height=400)
    
     def to_excel(df):
         output = BytesIO()
