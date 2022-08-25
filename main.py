@@ -238,8 +238,9 @@ if simulador_frente_caixa:
     Input_Simulador_Filas["Tamanho Médio da Fila"] = TAM
     Input_Simulador_Filas["Tamanho Médio da Fila dado que ela existe"] = TAMG
     Input_Simulador_Filas["PDVs necessários"] = PDV
+    
     st.subheader("Output")
-    st.dataframe(Input_Simulador_Filas)
+    st.table(Input_Simulador_Filas)
 
     def to_excel(df):
         output = BytesIO()
