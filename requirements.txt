@@ -7,3 +7,10 @@ openpyxl==3.0.9
 pyxlsb==1.0.9
 scikit-learn==1.0.2
 xlsxwriter==3.0.3
+
+openpyxl==3.0.10
+pip-chill==1.0.1
+pyxlsb==1.0.9
+streamlit-aggrid==0.3.3
+streamlit-option-menu==0.3.2
+xlsxwriter==3.0.3
