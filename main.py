@@ -253,7 +253,7 @@ if selected == "Sobre":
     st.subheader("Método:")
     with st.container():
         st.write(
-            "O método utilizado se baseia em teoria das filas e utiliza o modelo de fila m/m/c: uma fila com 'c' servidores e capacidade infinita de fila, para maiores detalhes consultar: https://en.wikipedia.org/wiki/M/M/c_queue. Para encontrar um número ótimo de atendentes de acordo com o SLA desejado, utilizamos o seguinte framework:")
+            "O método utilizado se baseia em teoria das filas e utiliza o modelo de fila m/m/c: uma fila com 'c' servidores e capacidade infinita de fila, para maiores detalhes consultar: https://en.wikipedia.org/wiki/M/M/c_queue. Para encontrar o número ótimo de atendentes de acordo com o SLA desejado, utilizamos o seguinte framework:")
 
         foto2 = Image.open('Framework_Simulador.png')
         st.image(foto2, caption='Framework do Simulador', use_column_width=False, width=600)
@@ -264,7 +264,7 @@ if selected == "Sobre":
             "Parâmetros básicos do modelo M/M/c:\n1. Demanda de Clientes \n2. Tempo Médio de Atendimento \n 3. '# de Servidores")
         
         foto3 = Image.open('FILA.png')
-        st.image(foto3, caption='Modelo de Fila M/M/c', use_column_width=False, width=300)
+        st.image(foto3, caption='Modelo de Fila M/M/c', use_column_width=False, width=500)
 
     st.subheader("Outputs:")
     with st.container():
